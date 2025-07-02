@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Entrena</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Resources/Static/styles/rutina.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="/Resources/Static/Images/logo.png" alt="Logo" height="35"
+                    class="d-inline-block align-text-top me-2">
+                Admin Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
+                aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" aria-current="page" href="/Resources/Templates/admin/ejercicios.html">
+                            <i class="bi bi-barbell"></i> Ejercicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover active" href="/Resources/Templates/admin/rutinas.html">
+                            <i class="bi bi-list-task"></i> Rutinas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/admin/usuarios.html">
+                            <i class="bi bi-people-fill"></i> Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/admin/configuracion.html">
+                            <i class="bi bi-gear-fill"></i> Configuración
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/inicio.html">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="mb-4">Crear Nueva Rutina</h2>
+                <form id="rutinaForm">
+                    <div class="mb-3">
+                        <label for="nombreRutina" class="form-label">Nombre de la Rutina</label>
+                        <input type="text" class="form-control" id="nombreRutina" name="nombreRutina" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ejercicios</label>
+                        <div id="ejerciciosContainer">
+                            <!-- Ejercicios se agregarán aquí dinámicamente -->
+                            <div class="row align-items-end mb-2 ejercicio-item">
+                                <div class="col-md-6">
+                                    <select class="form-select" name="ejercicio[]" required>
+                                        <option value="">Selecciona un ejercicio</option>
+                                        <option value="1">Sentadillas</option>
+                                        <option value="2">Flexiones</option>
+                                        <option value="3">Abdominales</option>
+                                        <option value="4">Burpees</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" name="repeticiones[]" min="1" placeholder="Repeticiones" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" name="orden[]" min="1" placeholder="Orden" required>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-danger btn-sm remove-ejercicio" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addEjercicio">
+                            <i class="bi bi-plus-circle"></i> Agregar Ejercicio
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar Rutina</button>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-10">
+                <h3 class="mb-3">Rutinas Creadas</h3>
+                <div id="rutinasList">
+                    <div class="alert alert-info">No hay rutinas creadas aún.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    const rutinas = [];
+
+    function renderRutinas() {
+        const rutinasList = document.getElementById('rutinasList');
+        if (rutinas.length === 0) {
+            rutinasList.innerHTML = '<div class="alert alert-info">No hay rutinas creadas aún.</div>';
+            return;
+        }
+        let html = '<div class="list-group">';
+        rutinas.forEach((rutina, idx) => {
+            html += `
+            <div class="list-group-item mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${rutina.nombre}</strong>
+                    </div>
+                    <span class="badge bg-secondary">${rutina.ejercicios.length} ejercicios</span>
+                </div>
+                <ul class="mt-2 mb-0">
+                    ${rutina.ejercicios.map(ej => `
+                        <li>
+                            ${ej.nombre} - ${ej.repeticiones} repeticiones (Orden: ${ej.orden})
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+            `;
+        });
+        html += '</div>';
+        rutinasList.innerHTML = html;
+    }
+
+    document.getElementById('rutinaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nombre = document.getElementById('nombreRutina').value.trim();
+        const ejercicios = [];
+        document.querySelectorAll('#ejerciciosContainer .ejercicio-item').forEach(item => {
+            const select = item.querySelector('select');
+            const rep = item.querySelector('input[name="repeticiones[]"]');
+            const orden = item.querySelector('input[name="orden[]"]');
+            if (select && rep && orden && select.value) {
+                const nombreEjercicio = select.options[select.selectedIndex].text;
+                ejercicios.push({
+                    nombre: nombreEjercicio,
+                    repeticiones: rep.value,
+                    orden: orden.value
+                });
+            }
+        });
+        if (nombre && ejercicios.length > 0) {
+            rutinas.push({ nombre, ejercicios });
+            renderRutinas();
+            alert('Rutina guardada correctamente.');
+            this.reset();
+            const container = document.getElementById('ejerciciosContainer');
+            container.innerHTML = '';
+            document.getElementById('addEjercicio').click();
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', renderRutinas);
+    </script>
+
+    <script>
+    document.getElementById('addEjercicio').addEventListener('click', function() {
+        const container = document.getElementById('ejerciciosContainer');
+        const item = document.createElement('div');
+        item.className = 'row align-items-end mb-2 ejercicio-item';
+        item.innerHTML = `
+            <div class="col-md-6">
+                <select class="form-select" name="ejercicio[]" required>
+                    <option value="">Selecciona un ejercicio</option>
+                    <option value="1">Sentadillas</option>
+                    <option value="2">Flexiones</option>
+                    <option value="3">Abdominales</option>
+                    <option value="4">Burpees</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="number" class="form-control" name="repeticiones[]" min="1" placeholder="Repeticiones" required>
+            </div>
+            <div class="col-md-2">
+                <input type="number" class="form-control" name="orden[]" min="1" placeholder="Orden" required>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-danger btn-sm remove-ejercicio" title="Eliminar">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+
+    document.getElementById('ejerciciosContainer').addEventListener('click', function(e) {
+        if (e.target.closest('.remove-ejercicio')) {
+            const item = e.target.closest('.ejercicio-item');
+            if (item) item.remove();
+        }
+    });
+
+    document.getElementById('rutinaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Aquí puedes agregar la lógica para guardar la rutina
+        alert('Rutina guardada correctamente.');
+        this.reset();
+        // Opcional: limpiar ejercicios adicionales
+        const container = document.getElementById('ejerciciosContainer');
+        container.innerHTML = '';
+        // Agregar un ejercicio vacío por defecto
+        document.getElementById('addEjercicio').click();
+    });
+    </script>
+
+    <footer class="bg-primary text-center text-light py-3 mt-5 border-top">
+        <div class="container">
+            <small>&copy; 2024 Entrena App. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
