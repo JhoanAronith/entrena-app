@@ -11,4 +11,8 @@ public class Rutina {
         System.out.println("5. Estiramiento - 5 minutos");
     }
 
+    public void marcarCompletado() {
+        System.out.println("Rutina marcada como completada.");
+    }
+
 }

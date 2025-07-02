@@ -160,6 +160,11 @@
                         </div>
                     </li>
                 </ul>
+                <div class="text-end mt-4">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#felicitacionesModal">
+                        Marcar como terminada
+                    </button>
+                </div>
                 <script>
                     let timers = {};
 
@@ -189,6 +194,25 @@
                 </script>
             </div>
         </div>
+    </div>
+
+    <!-- Modal de Felicitaciones -->
+    <div class="modal fade" id="felicitacionesModal" tabindex="-1" aria-labelledby="felicitacionesModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="felicitacionesModalLabel"><i class="bi bi-emoji-smile"></i> ¡Felicidades!</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body text-center">
+            <p class="fs-5 mb-3">¡Has completado la rutina!<br>¡Sigue así, estás haciendo un gran trabajo!</p>
+            <img src="https://cdn-icons-png.flaticon.com/512/3159/3159066.png" alt="Felicidades" width="80" class="mb-3">
+          </div>
+          <div class="modal-footer justify-content-center">
+            <a href="/Resources/Templates/rutinas.html" class="btn btn-primary">Seguir entrenando</a>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
         function increment(id) {
