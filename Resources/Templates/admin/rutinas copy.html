@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Rutinas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/Resources/Static/styles/rutina.css">
+    <style>
+        .user-table th, .user-table td { vertical-align: middle; }
+        .estado.activo { color: #198754; font-weight: bold; }
+        .estado.suspendido { color: #dc3545; font-weight: bold; }
+        .estado.pendiente { color: #ffc107; font-weight: bold; }
+        .table thead th { text-align: center; }
+        .table tbody td { text-align: center; }
+        .navbar-brand img { border-radius: 5px; }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="/Resources/Static/Images/logo.png" alt="Logo" height="35" class="me-2">
+                Admin Panel
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
+                aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/admin/ejercicios.html">
+                            <i class="bi bi-barbell"></i> Ejercicios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/admin/rutinas.html">
+                            <i class="bi bi-list-task"></i> Rutinas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover active" href="/Resources/Templates/admin/usuarios.html">
+                            <i class="bi bi-people-fill"></i> Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/admin/configuracion.html">
+                            <i class="bi bi-gear-fill"></i> Configuración
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-hover" href="/Resources/Templates/inicio.html">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <section class="user-list-section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Usuarios registrados</h2>
+                <button class="btn btn-success btn-sm">
+                    <i class="bi bi-person-plus"></i> Nuevo Usuario
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover user-table align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Estado</th>
+                            <th>Fecha Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Juan Pérez</td>
+                            <td>juan.perez@email.com</td>
+                            <td><span class="estado activo">Activo</span></td>
+                            <td>2024-03-12</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Juan Pérez')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm me-1" onclick="suspenderUsuario('juan.perez@email.com')">
+                                    <i class="bi bi-pause-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('juan.perez@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Maria Gómez</td>
+                            <td>maria.gomez@email.com</td>
+                            <td><span class="estado suspendido">Suspendido</span></td>
+                            <td>2024-02-28</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Maria Gómez')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-success btn-sm me-1" onclick="activarUsuario('maria.gomez@email.com')">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('maria.gomez@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Ruiz</td>
+                            <td>carlos.ruiz@email.com</td>
+                            <td><span class="estado activo">Activo</span></td>
+                            <td>2024-01-15</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Carlos Ruiz')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm me-1" onclick="suspenderUsuario('carlos.ruiz@email.com')">
+                                    <i class="bi bi-pause-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('carlos.ruiz@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Laura Torres</td>
+                            <td>laura.torres@email.com</td>
+                            <td><span class="estado pendiente">Pendiente</span></td>
+                            <td>2024-04-01</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Laura Torres')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-success btn-sm me-1" onclick="activarUsuario('laura.torres@email.com')">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('laura.torres@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pedro Sánchez</td>
+                            <td>pedro.sanchez@email.com</td>
+                            <td><span class="estado activo">Activo</span></td>
+                            <td>2024-03-20</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Pedro Sánchez')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm me-1" onclick="suspenderUsuario('pedro.sanchez@email.com')">
+                                    <i class="bi bi-pause-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('pedro.sanchez@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Andrea López</td>
+                            <td>andrea.lopez@email.com</td>
+                            <td><span class="estado suspendido">Suspendido</span></td>
+                            <td>2024-02-10</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Andrea López')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-success btn-sm me-1" onclick="activarUsuario('andrea.lopez@email.com')">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('andrea.lopez@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Fernando Castro</td>
+                            <td>fernando.castro@email.com</td>
+                            <td><span class="estado activo">Activo</span></td>
+                            <td>2024-03-05</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Fernando Castro')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm me-1" onclick="suspenderUsuario('fernando.castro@email.com')">
+                                    <i class="bi bi-pause-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('fernando.castro@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lucía Martínez</td>
+                            <td>lucia.martinez@email.com</td>
+                            <td><span class="estado pendiente">Pendiente</span></td>
+                            <td>2024-04-03</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Lucía Martínez')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-success btn-sm me-1" onclick="activarUsuario('lucia.martinez@email.com')">
+                                    <i class="bi bi-check-circle"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('lucia.martinez@email.com')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Puedes agregar más registros aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Rutinas -->
+    <div class="modal fade" id="modalRutinas" tabindex="-1" aria-labelledby="modalRutinasLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rutinas de <span id="modalUsuarioNombre"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="rutinasUsuario" class="list-group">
+                        <li class="list-group-item">Rutina 1: Cardio y fuerza</li>
+                        <li class="list-group-item">Rutina 2: Piernas y abdomen</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS + Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function abrirModalRutinas(nombre) {
+            document.getElementById('modalUsuarioNombre').textContent = nombre;
+            var modal = new bootstrap.Modal(document.getElementById('modalRutinas'));
+            modal.show();
+        }
+        function suspenderUsuario(email) {
+            if (confirm('¿Seguro que deseas suspender este usuario?')) {
+                alert('Usuario suspendido: ' + email);
+            }
+        }
+        function activarUsuario(email) {
+            if (confirm('¿Seguro que deseas activar este usuario?')) {
+                alert('Usuario activado: ' + email);
+            }
+        }
+        function eliminarUsuario(email) {
+            if (confirm('¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.')) {
+                alert('Usuario eliminado: ' + email);
+            }
+        }
+    </script>
+
+    <footer class="bg-primary text-center text-light py-3 mt-5 border-top">
+        <div class="container">
+            <small>&copy; 2024 Entrena App. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+</body>
+
+</html>

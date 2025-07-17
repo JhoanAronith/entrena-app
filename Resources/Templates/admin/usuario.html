@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Usuarios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .admin-header {
+            background: linear-gradient(90deg, #0d6efd 60%, #6c757d 100%);
+            color: #fff;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+        .admin-header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        .admin-header nav a {
+            color: #fff;
+            margin-right: 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .admin-header nav a.active, .admin-header nav a:hover {
+            color: #ffc107;
+        }
+        .estado.activo {
+            color: #198754;
+            font-weight: bold;
+        }
+        .estado.suspendido {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .user-table th, .user-table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header text-center">
+        <h1>Gestión de Usuarios</h1>
+        <nav class="mt-2">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/usuarios" class="active">Usuarios</a>
+            <a href="/admin/rutinas">Rutinas</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="user-list-section">
+            <h2 class="mb-4">Usuarios registrados</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover user-table align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Ejemplo de usuario, reemplazar con datos dinámicos -->
+                        <tr>
+                            <td>Juan Pérez</td>
+                            <td>juan.perez@email.com</td>
+                            <td><span class="estado activo">Activo</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Juan Pérez')">
+                                    <i class="bi bi-eye"></i> Ver Rutinas
+                                </button>
+                                <button class="btn btn-warning btn-sm me-1" onclick="suspenderUsuario('juan.perez@email.com')">
+                                    <i class="bi bi-pause-circle"></i> Suspender
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('juan.perez@email.com')">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Maria Gómez</td>
+                            <td>maria.gomez@email.com</td>
+                            <td><span class="estado suspendido">Suspendido</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm me-1" onclick="abrirModalRutinas('Maria Gómez')">
+                                    <i class="bi bi-eye"></i> Ver Rutinas
+                                </button>
+                                <button class="btn btn-success btn-sm me-1" onclick="activarUsuario('maria.gomez@email.com')">
+                                    <i class="bi bi-check-circle"></i> Activar
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminarUsuario('maria.gomez@email.com')">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Fin ejemplo -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Rutinas -->
+    <div class="modal fade" id="modalRutinas" tabindex="-1" aria-labelledby="modalRutinasLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Rutinas de <span id="modalUsuarioNombre"></span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <ul id="rutinasUsuario" class="list-group">
+                <!-- Rutinas dinámicas aquí -->
+                <li class="list-group-item">Rutina 1: Cardio y fuerza</li>
+                <li class="list-group-item">Rutina 2: Piernas y abdomen</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS + Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script>
+        function abrirModalRutinas(nombre) {
+            document.getElementById('modalUsuarioNombre').textContent = nombre;
+            // Aquí puedes cargar rutinas dinámicamente si tienes backend
+            var modal = new bootstrap.Modal(document.getElementById('modalRutinas'));
+            modal.show();
+        }
+        function suspenderUsuario(email) {
+            if (confirm('¿Seguro que deseas suspender este usuario?')) {
+                // Lógica para suspender usuario (AJAX o backend)
+                alert('Usuario suspendido: ' + email);
+            }
+        }
+        function activarUsuario(email) {
+            if (confirm('¿Seguro que deseas activar este usuario?')) {
+                // Lógica para activar usuario (AJAX o backend)
+                alert('Usuario activado: ' + email);
+            }
+        }
+        function eliminarUsuario(email) {
+            if (confirm('¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.')) {
+                // Lógica para eliminar usuario (AJAX o backend)
+                alert('Usuario eliminado: ' + email);
+            }
+        }
+    </script>
+</body>
+</html>
