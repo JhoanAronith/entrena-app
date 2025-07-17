@@ -1,0 +1,18 @@
+name: Docker CI
+
+on:
+  push:
+    branches: [master]  # o la rama que uses
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v3
+
+    - name: Construir la imagen Docker
+      run: docker build -t entrena-web .
